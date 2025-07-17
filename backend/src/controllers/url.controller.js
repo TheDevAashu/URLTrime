@@ -9,7 +9,6 @@ function generateRandomString(length) {
   const charsetLength = charset.length;
 
   for (let i = 0; i < length; i++) {
-   
     const randomIndex = Math.floor(Math.random() * charsetLength);
 
     result += charset.charAt(randomIndex);
@@ -40,6 +39,12 @@ const shortenUrl = async (req, res) => {
   console.log(req.body);
   const { url } = req.body;
 
+  if (!url) {
+    return res.status(400).json({
+      message: "Url missing",
+    });
+  }
+
   let [findExistingUrl] = await Url.find({ longUrl: url });
 
   if (findExistingUrl) {
@@ -48,8 +53,6 @@ const shortenUrl = async (req, res) => {
       shortUrl: "http://abc.com/" + findExistingUrl?.shortId,
     });
   }
-
-
 
   let attempt = 0;
 
@@ -67,12 +70,10 @@ const shortenUrl = async (req, res) => {
       console.log("Successfully created short URL:", savedUrl.shortId);
       break;
     } catch (error) {
-
       if (error.code === 11000) {
         console.log(`Collision detected for ${shortID}. Retrying...`);
         attempt++;
       } else {
-        
         throw error;
       }
     }
@@ -84,4 +85,16 @@ const shortenUrl = async (req, res) => {
   });
 };
 
-export { shortenUrl };
+const findLongUrl = async (req, res) => {
+  console.log(req.params);
+  const { id } = req.params;
+  let [response] = await Url.find({ shortId: id });
+  if(!response){
+     return res.status(200).json({
+      message: "Url not found",
+    });
+  }
+
+   return res.redirect(302, response.longUrl);
+};
+export { shortenUrl, findLongUrl };

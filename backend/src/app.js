@@ -6,6 +6,7 @@ import urlRouter from "./routes/url.routes.js";
 config();
 const app = express();
 app.use(express.json())
-app.use("/api", urlRouter);
+
+app.use("/", urlRouter);
 
 export default app;
