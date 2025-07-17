@@ -50,7 +50,7 @@ const shortenUrl = async (req, res) => {
   if (findExistingUrl) {
     return res.status(200).json({
       message: "Url already found",
-      shortUrl: "http://abc.com/" + findExistingUrl?.shortId,
+      url: "http://localhost:5000/" + findExistingUrl?.shortId,
     });
   }
 
