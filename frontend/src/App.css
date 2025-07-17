@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@theme {
+ 
+  --color-bglanding:  #0c213a;
+}
