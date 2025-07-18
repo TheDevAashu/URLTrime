@@ -1,1 +1,1 @@
-export const BACKEND_URL="https://url-trim-backend-git-main-aashu-singhs-projects.vercel.app/"
+export const BACKEND_URL="https://url-trim-backend-git-main-aashu-singhs-projects.vercel.app"
