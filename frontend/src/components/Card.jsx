@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BACKEND_URL } from "../utils/constants";
 
 export const Card = () => {
   const [formData, setData] = useState({});
@@ -13,13 +14,13 @@ export const Card = () => {
       return false;
     }
   };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(formData);
+  const handleSubmit = async () => {
+    console.log("dffh");
+
     if (!checkValidUrl(formData.url)) return;
 
     try {
-      const res = await fetch("http://localhost:5000/shorten", {
+      const res = await fetch(`${BACKEND_URL}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,32 +47,36 @@ export const Card = () => {
     setMode(false);
   };
   return (
-    <div className="bg-white w-full max-w-4xl h-auto rounded-4xl p-8 shadow-lg">
-      <form className=" flex flex-col gap-3.5" onSubmit={handleSubmit}>
-        <div className="b mt-4">
-          <h1 className="text-3xl font-bold">Shorten a long url</h1>
-          <h1 className="text-xl">No credit Required.</h1>
+    <div className=" w-full h-auto  p-8 font-mono flex   justify-center">
+      <div className="bg-bgCardBlack text-white p-8 rounded-4xl w-full max-w-2xl grid grid-cols-1 gap-4  ">
+        <div className=" ">
+          <h1 className="sm:text-3xl text-xl font-bold">Shorten a long url</h1>
+          <h1 className="sm:text-xl ">No credit Required.</h1>
         </div>
-        <div className="mt-8">
+        <div className="">
           {mode ? (
             <>
-              <div className="bg-white rounded-xl  ">
-                <h1 className="text-xl font-bold text-gray-800 mb-4">
+              <div className=" rounded-xl  ">
+                <p className="sm:text-2xl text-md font-bold  mb-4">
                   Your shorter link is here
-                </h1>
+                </p>
 
-                <div className="flex items-center space-x-3">
+                <div className="grid sm:grid-cols-12 grid-cols-1 gap-2  space-x-3">
                   <input
                     // ref={inputRef}
                     type="text"
                     value={formData.url}
                     readOnly
-                    className="w-full px-5 py-4 border border-gray-300 rounded-xl font-semibold text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:bg-gray-100 hover:border-gray-700"
+                    className="w-full px-5 
+                    sm:col-span-10
+                    py-4 border
+                     border-gray-300 rounded-xl font-semibold   focus:outline-none focus:ring-3"
                   />
                   <button
                     onClick={copyToClipboard}
-                    className="bg-blue-700 text-white p-3 rounded-xl w-[12rem]
-          hover:bg-black hover:cursor-pointer"
+                    className="bg-darkGrey text-white p-3 
+                       sm:col-span-2
+                    rounded-xl  hover:bg-lightGrey hover:cursor-pointer"
                   >
                     copy
                   </button>
@@ -84,7 +89,7 @@ export const Card = () => {
               <input
                 type="text "
                 className="border border-gray-300 w-full rounded-xl h-14 mt-3 px-5 font-semibold
-             hover:bg-gray-100 hover:border-gray-700 "
+              hover:border-gray-700 focus:outline-none  focus:ring-2 "
                 placeholder="https://www.example.com/your-long-url"
                 onChange={(e) => setData({ ...formData, url: e.target.value })}
                 value={formData.url}
@@ -92,27 +97,29 @@ export const Card = () => {
             </>
           )}
         </div>
-        <div className="">
-          {mode ? (
-            <div className="flex gap-3.5">
-              <button
-                className="bg-blue-700 text-white p-3 rounded-xl w-[12rem]
-          hover:bg-black hover:cursor-pointer"
-                onClick={handleClear}
-              >
-                <span className="text-lg font-semibold">Shorten New Link</span>
-              </button>
-            </div>
-          ) : (
+
+        {mode ? (
+          <div className=" grid sm:grid-cols-12 grid-cols-1">
             <button
-              className="bg-blue-700 text-white p-3 rounded-xl w-[12rem]
-          hover:bg-black hover:cursor-pointer"
+              className="bg-darkGrey  sm:col-span-5 col-span-1 text-white  px-6 py-3 rounded-xl 
+          hover:bg-lightGrey hover:cursor-pointer self-start"
+              onClick={handleClear}
+            >
+              <span className="text-lg font-semibold">Shorten New Link</span>
+            </button>
+          </div>
+        ) : (
+           <div className=" grid sm:grid-cols-12 grid-cols-1">
+            <button
+              className="bg-darkGrey  sm:col-span-4  text-white px-6 py-3  rounded-xl 
+          hover:bg-lightGrey hover:cursor-pointer  self-start"
+              onClick={() => handleSubmit()}
             >
               <span className="text-lg font-semibold">Get Your Link</span>
             </button>
-          )}
-        </div>
-      </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

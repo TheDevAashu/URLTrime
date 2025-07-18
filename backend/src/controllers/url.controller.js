@@ -81,7 +81,7 @@ const shortenUrl = async (req, res) => {
 
   return res.status(200).json({
     message: "Url shortend success",
-    shortUrl: "http://abc.com/" + shortID,
+    url: "http://localhost:5000/" + shortID,
   });
 };
 

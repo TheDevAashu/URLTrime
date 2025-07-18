@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @theme {
  
-  --color-bglanding:  #0c213a;
+  --color-bgBlack:  #000000;
+  --color-bgCardBlack:  #1C1C1C;
+  --color-darkGrey:  #363636;
+  --color-lightGrey:  #2C2C2C;
 }
+
