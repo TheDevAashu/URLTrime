@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { BACKEND_URL } from "../utils/constants";
+import { FireBaseContext } from "../context/FireBaseContext";
 
 export const Card = () => {
   const [formData, setData] = useState({});
   const [mode, setMode] = useState(false);
+  const { user} = useContext(FireBaseContext);
   const checkValidUrl = (url) => {
     try {
       new URL(url);
@@ -25,7 +27,7 @@ export const Card = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ url: formData.url }),
+        body: JSON.stringify({ url: formData.url, userEmail: user.email }),
       });
       const data = await res.json();
       setData({ ...formData, url: data.url });

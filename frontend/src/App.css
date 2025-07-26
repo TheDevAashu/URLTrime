@@ -5,6 +5,8 @@
   --color-bgCardBlack:  #1C1C1C;
   --color-darkGrey:  #363636;
   --color-lightGrey:  #2C2C2C;
+  --color-light:  #ffffff;
+  --color-frost:  rgba(30, 30, 30, 0.5);
 }
 
 body{
