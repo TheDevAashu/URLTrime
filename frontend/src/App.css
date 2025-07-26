@@ -1,4 +1,4 @@
-@import "tailwindcss";
+ @import "tailwindcss";
 @theme {
  
   --color-bgBlack:  #000000;
@@ -6,4 +6,11 @@
   --color-darkGrey:  #363636;
   --color-lightGrey:  #2C2C2C;
 }
+
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 
