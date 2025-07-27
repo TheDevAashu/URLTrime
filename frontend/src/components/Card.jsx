@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { BACKEND_URL } from "../utils/constants";
 import { FireBaseContext } from "../context/FireBaseContext";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -27,7 +26,7 @@ export const Card = () => {
     setShorten(!shorten);
 
     try {
-      const res = await fetch(`${BACKEND_URL}/shorten`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

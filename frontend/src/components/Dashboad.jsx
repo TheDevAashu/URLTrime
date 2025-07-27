@@ -7,7 +7,7 @@ const Dashboad = () => {
   const { user } = useContext(FireBaseContext);
   const [data, setData] = useState([]);
   const fetchData = async () => {
-    const res = await fetch(`${BACKEND_URL}/getAllUrl`, {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/getAllUrl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
