@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Urlcard from "./Urlcard";
-import { BACKEND_URL } from "../utils/constants";
 import { FireBaseContext } from "../context/FireBaseContext";
 
 const Dashboad = () => {

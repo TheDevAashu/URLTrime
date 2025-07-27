@@ -1,10 +1,9 @@
 import { useContext, useEffect } from "react";
 import "./App.css";
 import Footer from "./components/Footer";
-import { LandingPage } from "./components/LandingPage";
 import Navbar from "./components/Navbar";
 import { FireBaseContext } from "./context/FireBaseContext";
-import { Link, Outlet } from "react-router-dom";
+import {  Outlet } from "react-router-dom";
 function App() {
   const { trackAuthChange, user } = useContext(FireBaseContext);
 console.log(user);

@@ -1,12 +1,13 @@
 import React, { useContext, useState } from "react";
 import { FireBaseContext } from "../context/FireBaseContext";
-import { ToastContainer, toast } from "react-toastify";
 
 export const Card = () => {
   const [formData, setData] = useState({});
+  const [longUrl, setLongUrl] = useState(null)
   const [mode, setMode] = useState(false);
   const [shorten, setShorten] = useState(false);
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const { user } = useContext(FireBaseContext);
   const checkValidUrl = (url) => {
     try {
@@ -18,20 +19,20 @@ export const Card = () => {
       return false;
     }
   };
-  const notify = () => toast("Wow so easy!");
   const handleSubmit = async () => {
-    console.log("submit ");
+    // console.log("submit ");
     // notify();
     if (!checkValidUrl(formData.url)) return;
     setShorten(!shorten);
 
     try {
+      setLongUrl(formData.url)
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ url: formData.url, userEmail: user?.email }),
+        body: JSON.stringify({ url: formData.url }),
       });
       const data = await res.json();
       setData({ ...formData, url: data.url });
@@ -44,10 +45,32 @@ export const Card = () => {
     // console.log();
   };
 
+  const saveUrl = async () => {
+    if (!checkValidUrl(formData.url)) return;
+
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/saveUrl`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url: longUrl, userEmail: user?.email }),
+      });
+      const data = await res.json();
+      setSaved(!saved)
+    
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
+
   const copyToClipboard = () => {
     if (!formData.url) return;
     navigator.clipboard.writeText(formData.url);
-    setCopied(true)
+    setCopied(true);
   };
 
   const handleClear = () => {
@@ -57,7 +80,6 @@ export const Card = () => {
   };
   return (
     <div className=" w-full h-auto  p-8 font-mono flex   justify-center">
-      <ToastContainer />
       <div className="bg-bgCardBlack text-white p-8 rounded-4xl w-full max-w-2xl grid grid-cols-1 gap-4  ">
         <div className=" ">
           <h1 className="sm:text-3xl text-xl font-bold">Shorten a long url</h1>
@@ -88,7 +110,7 @@ export const Card = () => {
                       className="bg-darkGrey text-white  py-3 px-4
                     rounded-xl  hover:bg-lightGrey hover:cursor-pointer"
                     >
-                     {!copied ?"Copy": "Copied" } 
+                      {!copied ? "Copy" : "Copied"}
                     </button>
                   </div>
                 </div>
@@ -116,14 +138,21 @@ export const Card = () => {
         </div>
 
         {mode ? (
-          <div className=" grid sm:grid-cols-12 grid-cols-1">
+          <div className=" grid sm:grid-cols-12 grid-cols-1 gap-3">
             <button
-              className="bg-darkGrey  sm:col-span-4 col-span-1 text-white  py-2 rounded-xl 
+              className="bg-darkGrey  sm:col-span-4 col-span-1  text-white  py-1 rounded-xl 
           hover:bg-lightGrey hover:cursor-pointer self-start"
               onClick={handleClear}
             >
               <span className="text-lg font-semibold">Shorten New Link</span>
             </button>
+            {user ? <button
+              className="bg-darkGrey  sm:col-span-2 col-span-1 text-white  py-1 rounded-xl 
+          hover:bg-lightGrey hover:cursor-pointer self-start"
+              onClick={saveUrl}
+            >
+              <span className="text-lg font-semibold">{!saved ? "Save" : "Saved"} </span>
+            </button> : null}
           </div>
         ) : (
           <div className=" grid sm:grid-cols-12 grid-cols-1">
