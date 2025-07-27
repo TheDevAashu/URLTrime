@@ -1,11 +1,14 @@
 import React, { useContext, useState } from "react";
 import { BACKEND_URL } from "../utils/constants";
 import { FireBaseContext } from "../context/FireBaseContext";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Card = () => {
   const [formData, setData] = useState({});
   const [mode, setMode] = useState(false);
-  const { user} = useContext(FireBaseContext);
+  const [shorten, setShorten] = useState(false);
+  const [copied, setCopied] = useState(false)
+  const { user } = useContext(FireBaseContext);
   const checkValidUrl = (url) => {
     try {
       new URL(url);
@@ -16,10 +19,12 @@ export const Card = () => {
       return false;
     }
   };
+  const notify = () => toast("Wow so easy!");
   const handleSubmit = async () => {
-    console.log("dffh");
-
+    console.log("submit ");
+    // notify();
     if (!checkValidUrl(formData.url)) return;
+    setShorten(!shorten);
 
     try {
       const res = await fetch(`${BACKEND_URL}/shorten`, {
@@ -27,7 +32,7 @@ export const Card = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ url: formData.url, userEmail: user.email }),
+        body: JSON.stringify({ url: formData.url, userEmail: user?.email }),
       });
       const data = await res.json();
       setData({ ...formData, url: data.url });
@@ -36,20 +41,24 @@ export const Card = () => {
     } catch (error) {
       console.log(error);
     }
+    setShorten(!shorten);
     // console.log();
   };
 
   const copyToClipboard = () => {
     if (!formData.url) return;
     navigator.clipboard.writeText(formData.url);
+    setCopied(true)
   };
 
   const handleClear = () => {
     setData({});
     setMode(false);
+    setShorten(!shorten);
   };
   return (
     <div className=" w-full h-auto  p-8 font-mono flex   justify-center">
+      <ToastContainer />
       <div className="bg-bgCardBlack text-white p-8 rounded-4xl w-full max-w-2xl grid grid-cols-1 gap-4  ">
         <div className=" ">
           <h1 className="sm:text-3xl text-xl font-bold">Shorten a long url</h1>
@@ -63,7 +72,7 @@ export const Card = () => {
                   Your shorter link is here
                 </p>
 
-                <div className="grid sm:grid-cols-12 grid-cols-1 gap-2  space-x-3">
+                <div className="grid sm:grid-cols-12 grid-cols-1 gap-2 ">
                   <input
                     // ref={inputRef}
                     type="text"
@@ -71,31 +80,38 @@ export const Card = () => {
                     readOnly
                     className="w-full px-5 
                     sm:col-span-10
-                    py-4 border
+                    py-3 border
                      border-gray-300 rounded-xl font-semibold   focus:outline-none focus:ring-3"
                   />
-                  <button
-                    onClick={copyToClipboard}
-                    className="bg-darkGrey text-white p-3 
-                       sm:col-span-2
+                  <div className=" sm:col-span-2 ">
+                    <button
+                      onClick={copyToClipboard}
+                      className="bg-darkGrey text-white  py-3 px-4
                     rounded-xl  hover:bg-lightGrey hover:cursor-pointer"
-                  >
-                    copy
-                  </button>
+                    >
+                     {!copied ?"Copy": "Copied" } 
+                    </button>
+                  </div>
                 </div>
               </div>
             </>
           ) : (
             <>
               <h1 className="text-xl font-bold">Paste your long link here</h1>
-              <input
-                type="text "
-                className="border border-gray-300 w-full rounded-xl h-14 mt-3 px-5 font-semibold
+              {!shorten ? (
+                <input
+                  type="text "
+                  className="border border-gray-300 w-full rounded-xl h-12 mt-3 px-4 font-semibold
               hover:border-gray-700 focus:outline-none  focus:ring-2 "
-                placeholder="https://www.example.com/your-long-url"
-                onChange={(e) => setData({ ...formData, url: e.target.value })}
-                value={formData.url}
-              ></input>
+                  placeholder="https://www.example.com/your-long-url"
+                  onChange={(e) =>
+                    setData({ ...formData, url: e.target.value })
+                  }
+                  value={formData.url}
+                ></input>
+              ) : (
+                <h1 className="text-xl">Please Wait ... </h1>
+              )}
             </>
           )}
         </div>
@@ -103,7 +119,7 @@ export const Card = () => {
         {mode ? (
           <div className=" grid sm:grid-cols-12 grid-cols-1">
             <button
-              className="bg-darkGrey  sm:col-span-5 col-span-1 text-white  px-6 py-3 rounded-xl 
+              className="bg-darkGrey  sm:col-span-4 col-span-1 text-white  py-2 rounded-xl 
           hover:bg-lightGrey hover:cursor-pointer self-start"
               onClick={handleClear}
             >
@@ -111,9 +127,9 @@ export const Card = () => {
             </button>
           </div>
         ) : (
-           <div className=" grid sm:grid-cols-12 grid-cols-1">
+          <div className=" grid sm:grid-cols-12 grid-cols-1">
             <button
-              className="bg-darkGrey  sm:col-span-4  text-white px-6 py-3  rounded-xl 
+              className="bg-darkGrey  sm:col-span-4  text-white  py-2  rounded-xl 
           hover:bg-lightGrey hover:cursor-pointer  self-start"
               onClick={() => handleSubmit()}
             >

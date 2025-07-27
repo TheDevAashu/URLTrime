@@ -4,19 +4,19 @@ import { BACKEND_URL } from "../utils/constants";
 import { FireBaseContext } from "../context/FireBaseContext";
 
 const Dashboad = () => {
-  const { user } = useContext(FireBaseContext)
-  const [data, setData] = useState([])
+  const { user } = useContext(FireBaseContext);
+  const [data, setData] = useState([]);
   const fetchData = async () => {
     const res = await fetch(`${BACKEND_URL}/getAllUrl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userEmail:user?.email }),
+      body: JSON.stringify({ userEmail: user?.email }),
     });
 
     const datac = await res.json();
-    setData(datac.urls)
+    setData(datac.urls);
     console.log(datac);
   };
   useEffect(() => {
@@ -24,10 +24,8 @@ const Dashboad = () => {
   }, []);
 
   return (
-    <div>
-      {data && data.map((items)=> (
-        <Urlcard {...items}/>
-      ))}
+    <div className=" mt-20 w-[90%] m-auto">
+      <div className="grid md:grid-cols-2 md:gap-4">{data && data.map((items) => <Urlcard {...items} />)}</div>
     </div>
   );
 };

@@ -2,20 +2,21 @@ import React from "react";
 
 const Urlcard = (props) => {
   console.log(props);
-  
+
   const { longUrl, createdAt } = props;
   return (
-    <div className="mt-20 w-[50%] flex flex-col gap-4  border border-amber-500 rounded-2xl p-6  backdrop-blur-lg bg-black/30 text-light">
+    <div className=" w-full flex flex-col gap-4  border border-neutral-800 rounded-2xl p-6 bg-white/10 text-light shadow-md hover:shadow-lg
+    shadow-neutral-500/50 scale-95 hover:scale-100 transition duration-300  ease-out delay-100 cursor-pointer">
       <div className="">
-        <div>{longUrl}</div>
-        <div className="text-2xl font-bold">https:de.com/problems/re/</div>
+        <div className="font-serif">{longUrl.substr(0, 80)}</div>
+        <div className="text-2xl font-bold mt-2">https:de.com/problems/re/</div>
       </div>
-      <div className="flex gap-3.5">
+      <div className="flex gap-4.5 ">
         <div>{createdAt} </div>
-        <div>
+        <div className="cursor-pointer text-xl">
           <ion-icon name="copy-outline"></ion-icon>
         </div>
-        <div>
+        <div className="cursor-pointer text-xl">
           <ion-icon name="trash-outline"></ion-icon>
         </div>
       </div>

@@ -14,7 +14,7 @@ console.log(user);
   }, []);
 
   return (
-    <div className="bg-bgBlack flex flex-col min-h-screen ">
+    <div className="bg-bgBlack flex flex-col min-h-screen font-mono">
       <Navbar />
       <main className="flex-grow mt-20">
         <Outlet />
